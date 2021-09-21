@@ -2,7 +2,7 @@
 
 OBJECT = Mat
 
-top right, top left, top rear, top front
+top right, top left, top rear,beside, top front
 
 <img src="https://user-images.githubusercontent.com/77099292/134200716-02b7f658-d9eb-454e-a044-a64f364c394c.jpg" width="250" height="250">
 
@@ -16,4 +16,3 @@ top right, top left, top rear, top front
 
 
 
-![14785372652722](https://user-images.githubusercontent.com/77099292/134201878-f551d606-1bcc-4a29-bd27-6493494f5865.jpg)
