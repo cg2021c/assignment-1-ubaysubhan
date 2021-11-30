@@ -1,234 +1,295 @@
-function main() {
-	var canvas = document.getElementById("myCanvas"); // The Canvas
-	var gl = canvas.getContext("webgl"); // The Paints and Brush
+var vertexShaderText = 
+[
+'precision mediump float;',
+'',
+'attribute vec2 vertPosition;',
+'attribute vec3 vertColor;',
+'varying vec3 fragColor;',
+'uniform mat4 uChange;',
+'',
+'void main()',
+'{',
+'  fragColor = vertColor;',
+'  gl_Position = uChange * vec4(vertPosition, 0.0, 1.0);',
+'}'
+].join('\n');
 
-	
-    var vertices = [
-        -0.7009593019965,0.475519121646,0.0,0.0,0.0,
-        -0.7368723050583,0.3749627130732,0.0,0.0,0.0,//1
-        -0.7368723050583,0.3749627130732,0.0,0.0,0.0,
-        -0.7332810047521,0.2546541528164,0.0,0.0,0.0,//2
-        -0.7332810047521,0.2546541528164,0.0,0.0,0.0,
-        -0.7171201533743,0.1038195399572,0.0,0.0,0.0,//3
-        -0.7171201533743,0.1038195399572,0.0,0.0,0.0,
-        -0.6711694659568,0.0552831163193,0.0,0.0,0.0,//4
-        -0.6711694659568,0.0552831163193,0.0,0.0,0.0,
-        -0.5951236819736,0.0509376429488,0.0,0.0,0.0,//5
-        -0.5951236819736,0.0509376429488,0.0,0.0,0.0,
-        -0.4582412708039,0.0487649062636,0.0,0.0,0.0,//6
-        -0.4582412708039,0.0487649062636,0.0,0.0,0.0,
-        -0.3191861229489,0.0509376429488,0.0,0.0,0.0,//7
-        -0.3191861229489,0.0509376429488,0.0,0.0,0.0,
-        -0.2127220253724,0.0661467997454,0.0,0.0,0.0,//8
-        -0.2127220253724,0.0661467997454,0.0,0.0,0.0,
-        -0.1692672916677,0.1248106902468,0.0,0.0,0.0,//9
-        -0.1692672916677,0.1248106902468,0.0,0.0,0.0,
-        -0.1584036082415,0.2421384712494,0.0,0.0,0.0,//10
-        -0.1584036082415,0.2421384712494,0.0,0.0,0.0,
-        -0.1475399248154,0.3333934120293,0.0,0.0,0.0,//11
-        -0.1475399248154,0.3333934120293,0.0,0.0,0.0,
-        -0.1453671881301,0.405093722642,0.0,0.0,0.0,//12
-        -0.1453671881301,0.405093722642,0.0,0.0,0.0,
-        -0.1909946585201,0.4659303498286,0.0,0.0,0.0,//13
-        -0.1909946585201,0.4659303498286,0.0,0.0,0.0,
-        -0.3257043330046,0.4659303498286,0.0,0.0,0.0,//14
-        -0.3257043330046,0.4659303498286,0.0,0.0,0.0,
-        -0.4604140074891,0.4615848764581,0.0,0.0,0.0,//15
-        -0.4604140074891,0.4615848764581,0.0,0.0,0.0,
-        -0.6211965221964,0.4637576131433,0.0,0.0,0.0,//16
-        -0.6211965221964,0.4637576131433,0.0,0.0,0.0,
-        -0.7009593019965,0.475519121646,0.0,0.0,0.0,//17
-        -0.1909946585201,0.4659303498286,0.0,0.0,0.0,
-        -0.2453130756509,0.5289397137004,0.0,0.0,0.0,//18
-        -0.2453130756509,0.5289397137004,0.0,0.0,0.0,
-        -0.3126679128932,0.5311124503856,0.0,0.0,0.0,//1
-        -0.3126679128932,0.5311124503856,0.0,0.0,0.0,
-        -0.5777417884918,0.5289397137004,0.0,0.0,0.0,//2
-        -0.5777417884918,0.5289397137004,0.0,0.0,0.0,
-        -0.6842058860682,0.5332851870708,0.0,0.0,0.0,//3
-        -0.6842058860682,0.5332851870708,0.0,0.0,0.0,
-        -0.7009593019965,0.475519121646,0.0,0.0,0.0,//4
-        -0.6,0.4,0.0,0.0,0.0,
-        -0.6559603091602,0.3877118291601,0.0,0.0,0.0,//5
-        -0.6559603091602,0.3877118291601,0.0,0.0,0.0,
-        -0.6603057825307,0.3051478351212,0.0,0.0,0.0,//6
-        -0.6603057825307,0.3051478351212,0.0,0.0,0.0,
-        -0.6429238890488,0.1617472138957,0.0,0.0,0.0,//7
-        -0.6429238890488,0.1617472138957,0.0,0.0,0.0,
-        -0.6277147322522,0.1009105867092,0.0,0.0,0.0,//8
-        -0.6277147322522,0.1009105867092,0.0,0.0,0.0,
-        -0.5668781050656,0.0835286932273,0.0,0.0,0.0,//9
-        -0.5668781050656,0.0835286932273,0.0,0.0,0.0,
-        -0.2474858123361,0.0943923766535,0.0,0.0,0.0,//10
-        -0.2474858123361,0.0943923766535,0.0,0.0,0.0,
-        -0.2083765520019,0.1574017405253,0.0,0.0,0.0,//11
-        -0.2083765520019,0.1574017405253,0.0,0.0,0.0,
-        -0.1844764484643,0.3703299356782,0.0,0.0,0.0,//12
-        -0.1844764484643,0.3703299356782,0.0,0.0,0.0,
-        -0.227931182169,0.4268210894943,0.0,0.0,0.0,//13
-        -0.227931182169,0.4268210894943,0.0,0.0,0.0,
-        -0.5277688447314,0.4203028794386,0.0,0.0,0.0,//14
-        -0.5277688447314,0.4203028794386,0.0,0.0,0.0,
-        -0.6,0.4,0.0,0.0,0.0,//15
-        -0.5451507382132,0.4746212965695,0.0,0.0,0.0,
-        -0.2931132827261,0.4746212965695,0.0,0.0,0.0,//16
-        -0.2931132827261,0.4746212965695,0.0,0.0,0.0,
-        -0.2952860194113,0.5224215036446,0.0,0.0,0.0,//16
-        -0.5560144216394,0.5224215036446,0.0,0.0,0.0,
-        -0.5451507382132,0.4746212965695,0.0,0.0,0.0,//17
-        -0.2952860194113,0.5224215036446,0.0,0.0,0.0,
-        -0.5560144216394,0.5224215036446,0.0,0.0,0.0,//18
-        -0.3843682235059,0.3442570954554,0.0,0.0,0.0,
-        -0.440859377322,0.2508294179904,0.0,0.0,0.0,
-        -0.440859377322,0.2508294179904,0.0,0.0,0.0,
-        -0.3713318033945,0.2595203647313,0.0,0.0,0.0,
-        -0.3713318033945,0.2595203647313,0.0,0.0,0.0,
-        -0.3843682235059,0.3442570954554,0.0,0.0,0.0,
-        -0.4386866406368,0.2182383677118,0.0,0.0,0.0,
-        -0.46910495423,0.098737850024,0.0,0.0,0.0,
-        -0.46910495423,0.098737850024,0.0,0.0,0.0,
-        -0.4,0.2,0.0,0.0,0.0,
-        -0.4,0.2,0.0,0.0,0.0,
-        -0.4386866406368,0.2182383677118,0.0,0.0,0.0,
+var fragmentShaderText =
+[
+'precision mediump float;',
+'',
+'varying vec3 fragColor;',
+'void main()',
+'{',
+'  gl_FragColor = vec4(fragColor, 1.0);',
+'}'
+].join('\n');
 
+function main () {
+	console.log('This is working');
 
-        0.3553461404341,0.4966483220695,0.0,0.0,0.0,
-        0.3632556190843,0.3490047205991,0.0,0.0,0.0,//1
-        0.3632556190843,0.3490047205991,0.0,0.0,0.0,
-        0.4159854767522,0.1196298397434,0.0,0.0,0.0,//2
-        0.4159854767522,0.1196298397434,0.0,0.0,0.0,
-        0.8193688879123,0.1618137258778,0.0,0.0,0.0,//3
-        0.8193688879123,0.1618137258778,0.0,0.0,0.0,
-        0.8615527740467,0.3885521138501,0.0,0.0,0.0,//4
-        0.8615527740467,0.3885521138501,0.0,0.0,0.0,
-        0.5979034857068,0.3885521138501,0.0,0.0,0.0,//5
-        0.3553461404341,0.4966483220695,0.0,0.0,0.0,
-        0.4238949554024,0.5625606441544,0.0,0.0,0.0,//6
-        0.4238949554024,0.5625606441544,0.0,0.0,0.0,
-        0.8114594092621,0.5678336299212,0.0,0.0,0.0,//7
-        0.8114594092621,0.5678336299212,0.0,0.0,0.0,
-        0.8615527740467,0.3885521138501,0.0,0.0,0.0,//8
-        0.3553461404341,0.4966483220695,0.0,0.0,0.0,
-        0.4238949554024,0.5625606441544,0.0,0.0,0.0,//9
-        0.4818977988372,0.5309227295537,0.0,0.0,0.0,
-        0.6901807366257,0.5493781797375,0.0,0.0,0.0,//10
-        0.4792613059538,0.4280995071011,0.0,0.0,0.0,
-        0.7139091725763,0.4439184644015,0.0,0.0,0.0,//11
-        0.7139091725763,0.4439184644015,0.0,0.0,0.0,
-        0.6954537223925,0.5045578007197,0.0,0.0,0.0,//12
-        0.6954537223925,0.5045578007197,0.0,0.0,0.0,
-        0.4792613059538,0.4861023505359,0.0,0.0,0.0,//13
-        0.4792613059538,0.4861023505359,0.0,0.0,0.0,
-        0.4792613059538,0.4280995071011,0.0,0.0,0.0,//14
-        0.6954537223925,0.5045578007197,0.0,0.0,0.0,
-        0.6901807366257,0.5493781797375,0.0,0.0,0.0,//15
-        0.4792613059538,0.4861023505359,0.0,0.0,0.0,
-        0.4818977988372,0.5309227295537,0.0,0.0,0.0,//16
-        0.3632556190843,0.3490047205991,0.0,0.0,0.0,
-        0.5979034857068,0.3885521138501,0.0,0.0,0.0,//17
+	var canvas = document.getElementById('myCanvas');
+	var gl = canvas.getContext('webgl');
 
+	if (!gl) {
+		console.log('WebGL not supported, falling back on experimental-webgl');
+		gl = canvas.getContext('experimental-webgl');
+	}
 
-    ];
+	if (!gl) {
+		alert('Your browser does not support WebGL');
+	}
 
-    var buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	// gl.clearColor(0.8, 0.7, 0.5, 1.0);
+	// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+	// Create shaders
+	var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+	var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
 
-    var vsSource = `
-        attribute vec2 aPosition;
-        attribute vec3 aColor;
-        varying vec3 vColor;
-        uniform vec2 uDelta;
-        void main() {
-            vec2 position;
-            if(aPosition.x >= 0.0){
-                position = vec2(aPosition.x, aPosition.y + uDelta);
-            }
-            else{
-                position = vec2(aPosition.x, aPosition.y);
-            }
-            gl_PointSize = 10.0;
-            gl_Position = vec4(position, 0.0, 1.0);
-            vColor = aColor;
-        }
-    `;
-    var fsSource = `
-        precision mediump float;
-        varying vec3 vColor;
-        void main() {
-            gl_FragColor = vec4(vColor, 1.0);
-        }
-    `
+	gl.shaderSource(vertexShader, vertexShaderText);
+	gl.shaderSource(fragmentShader, fragmentShaderText);
 
-   
-    var vertexShader = gl.createShader(gl.VERTEX_SHADER);   
-    gl.shaderSource(vertexShader, vsSource);   
-    var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);   
-    gl.shaderSource(fragmentShader, fsSource);  
+	gl.compileShader(vertexShader);
+	if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+		console.error('ERROR compiling vertex shader!', gl.getShaderInfoLog(vertexShader));
+		return;
+	}
 
-    
-    gl.compileShader(vertexShader); 
-    gl.compileShader(fragmentShader);   
+	gl.compileShader(fragmentShader);
+	if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+		console.error('ERROR compiling fragment shader!', gl.getShaderInfoLog(fragmentShader));
+		return;
+	}
 
-   
-    var shaderProgram = gl.createProgram();
+	var program = gl.createProgram();
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragmentShader);
+	gl.linkProgram(program);
+	if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+		console.error('ERROR linking program!', gl.getProgramInfoLog(program));
+		return;
+	}
+	gl.validateProgram(program);
+	if (!gl.getProgramParameter(program, gl.VALIDATE_STATUS)) {
+		console.error('ERROR validating program!', gl.getProgramInfoLog(program));
+		return;
+	}
 
-   
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
+    gl.useProgram(program);
 
-    
-    gl.linkProgram(shaderProgram);  
-    gl.useProgram(shaderProgram);
+	var vertices = 
+	[   // X, Y,        R, G, B
 
- 
-    var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-    gl.vertexAttribPointer(
-        aPosition,
-        2,
-        gl.FLOAT,
-        false,
-        5 * Float32Array.BYTES_PER_ELEMENT,
-        0
-    );
-    gl.enableVertexAttribArray(aPosition);
-    var aColor = gl.getAttribLocation(shaderProgram, "aColor");
-    gl.vertexAttribPointer(
-        aColor,
-        3,
-        gl.FLOAT,
-        false,
-        5 * Float32Array.BYTES_PER_ELEMENT,
-        2 * Float32Array.BYTES_PER_ELEMENT
-    );
-    gl.enableVertexAttribArray(aColor);
+        // a,b,c,d
+		-0.698,0.230,     0.0, 0.0, 0.0,      // point B
+		-0.667,0.311,     0.0, 0.0, 0.0,      // point A
+		-0.623,0.331,     0.0, 0.0, 0.0,      // point C
 
-    // Create a pointer to the Uniform variable we have on the shader
-    var uDelta = gl.getUniformLocation(shaderProgram, "uDelta");
-    var delta = [0.0, 0.0]; // For tha changes on the x and y
-    var deltaX = 0.0204;
-    var deltaY = 0.0204;
-    var animating = true;
-   
-    function render() {
+		-0.698,0.230,     0.0, 0.0, 0.0,      // point D
+        -0.623,0.331,     0.0, 0.0, 0.0,      // point B
+        -0.133,0.337,     0.0, 0.0, 0.0,      // point C
+
+        -0.698,0.230,     0.0, 0.0, 0.0,      // Point D
+        -0.133,0.337,     0.0, 0.0, 0.0,      // Point E
+        -0.079,0.269,     0.0, 0.0, 0.0,      // point C
+
+        -0.698,0.230,     0.0, 0.0, 0.0,      // Point D
+        -0.079,0.269,     0.0, 0.0, 0.0,      // Point E
+        -0.029,0.211,     0.0, 0.0, 0.0,      // Point F
+
+        // e,f
+        -0.029,0.211,     0.0, 0.0, 0.0,      // Point E'
+        -0.107,0.211,     0.0, 0.0, 0.0,      // Point F
+        -0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+
+        -0.107,0.211,     0.0, 0.0, 0.0,      // Point F
+        -0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+        -0.110,-0.168,     0.0, 0.0, 0.0,      // Point H
+
+        // g,h
+        -0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+        -0.110,-0.168,     0.0, 0.0, 0.0,      // Point G'
+        -0.063,-0.165,    0.0, 0.0, 0.0,      // Point I
+
+        -0.110,-0.168,     0.0, 0.0, 0.0,      // Point G
+        -0.063,-0.165,    0.0, 0.0, 0.0,      // Point I
+        -0.126,-0.220,    0.0, 0.0, 0.0,      // Point I'
+
+        //I,j,k
+        -0.110,-0.168,    0.0, 0.0, 0.0,      // Point I'
+        -0.126,-0.220,    0.0, 0.0, 0.0,      //Point I''
+        -0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+
+        -0.110,-0.168,    0.0, 0.0, 0.0,      //Point I''
+        -0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+        -0.613,-0.165,    0.0, 0.0, 0.0,      //Point I'''
+
+        -0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+        -0.613,-0.165,    0.0, 0.0, 0.0,      //Point I'''
+        -0.613,-0.227,    0.0, 0.0, 0.0,      // Point EI'
+
         
-        if (animating) {
-            // Build a linear animation
-            if (delta[0] >= 0.6 || delta[0] <= -1.3) deltaX = -deltaX;
-            if (delta[1] >= 0.5 || delta[1] <= -0.5) deltaY = -deltaY;
-            delta[0] += deltaX;
-            delta[1] += deltaY;
-            gl.uniform2fv(uDelta, delta);
+        -0.613,-0.227,     0.0, 0.0, 0.0,      // Point F
+        -0.714,0.168,     0.0, 0.0, 0.0,      // Point F'
+        -0.626,0.178,    0.0, 0.0, 0.0,      // Point F''
+
+        -0.714,0.168,     0.0, 0.0, 0.0,      // Point F
+        -0.613,-0.227,    0.0, 0.0, 0.0,      // Point F''
+        -0.698,-0.172,    0.0, 0.0, 0.0,      // Point F'''
+
+        // Top Trapesium
+        -0.714,0.168,     0.0, 0.0, 0.0,      // Point H
+        -0.698,0.230,     0.0, 0.0, 0.0,      // Point H'
+        -0.107,0.211,     0.0, 0.0, 0.0,      // Point H''
+
+        -0.107,0.211,     0.6, 0.1, 0.0,      // Point H'
+        -0.110,-0.168,     0.5, 0.8, 0.0,      // Point H''
+        -0.613,-0.165,    0.5, 0.7, 0.5,      // Point H''
+
+        -0.626,0.211,     0.6, 0.1, 0.0,     // Point G
+        -0.107,0.211,     0.5, 0.8, 0.0,      // Point H'
+        -0.613,-0.165,   0.5, 0.7, 0.5,     // Point O
+
+        //move
+        
+        0.698,0.230,     0.0, 0.0, 0.0,      // point B
+		0.667,0.311,     0.0, 0.0, 0.0,      // point A
+		0.623,0.331,     0.0, 0.0, 0.0,      // point C
+
+		0.698,0.230,     0.0, 0.0, 0.0,      // point D
+        0.623,0.331,     0.0, 0.0, 0.0,      // point B
+        0.133,0.337,     0.0, 0.0, 0.0,      // point C
+
+        0.698,0.230,     0.0, 0.0, 0.0,      // Point D
+        0.133,0.337,     0.0, 0.0, 0.0,      // Point E
+        0.079,0.269,     0.0, 0.0, 0.0,      // point C
+
+        0.698,0.230,     0.0, 0.0, 0.0,      // Point D
+        0.079,0.269,     0.0, 0.0, 0.0,      // Point E
+        0.029,0.211,     0.0, 0.0, 0.0,      // Point F
+
+        // e,f
+        0.029,0.211,     0.0, 0.0, 0.0,      // Point E'
+        0.107,0.211,     0.0, 0.0, 0.0,      // Point F
+        0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+
+        0.107,0.211,     0.0, 0.0, 0.0,      // Point F
+        0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+        0.110,-0.168,     0.0, 0.0, 0.0,      // Point H
+
+        // g,h
+        0.029,0.110,     0.0, 0.0, 0.0,      // Point G
+        0.110,-0.168,     0.0, 0.0, 0.0,      // Point G'
+        0.063,-0.165,    0.0, 0.0, 0.0,      // Point I
+
+        0.110,-0.168,     0.0, 0.0, 0.0,      // Point G
+        0.063,-0.165,    0.0, 0.0, 0.0,      // Point I
+        0.126,-0.220,    0.0, 0.0, 0.0,      // Point I'
+
+        //I,j,k
+        0.110,-0.168,    0.0, 0.0, 0.0,      // Point I'
+        0.126,-0.220,    0.0, 0.0, 0.0,      //Point I''
+        0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+
+        0.110,-0.168,    0.0, 0.0, 0.0,      //Point I''
+        0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+        0.613,-0.165,    0.0, 0.0, 0.0,      //Point I'''
+
+        0.535,-0.230,    0.0, 0.0, 0.0,      // Point EI
+        0.613,-0.165,    0.0, 0.0, 0.0,      //Point I'''
+        0.613,-0.227,    0.0, 0.0, 0.0,      // Point EI'
+
+        // Toggle switch fire power
+        0.613,-0.227,     0.0, 0.0, 0.0,      // Point F
+        0.714,0.168,     0.0, 0.0, 0.0,      // Point F'
+        0.626,0.178,    0.0, 0.0, 0.0,      // Point F''
+
+        0.714,0.168,     0.0, 0.0, 0.0,      // Point F
+        0.613,-0.227,    0.0, 0.0, 0.0,      // Point F''
+        0.698,-0.172,    0.0, 0.0, 0.0,      // Point F'''
+
+        // Top Trapesium
+        0.714,0.168,     0.0, 0.0, 0.0,      // Point H
+        0.698,0.230,     0.0, 0.0, 0.0,      // Point H'
+        0.107,0.211,     0.0, 0.0, 0.0,      // Point H''
+
+        0.107,0.211,    0.6, 0.1, 0.0,       // Point H'
+        0.110,-0.168,      0.5, 0.8, 0.0,      // Point H''
+        0.613,-0.165,      0.5, 0.7, 0.5,      // Point H''
+
+        0.626,0.211,    0.6, 0.1, 0.0,     // Point G
+        0.107,0.211,     0.5, 0.8, 0.0,       // Point H'
+        0.613,-0.165,    0.5, 0.7, 0.5,     // Point O
+	];
+
+	var vertexBufferObject = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+
+	var positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
+	var colorAttribLocation = gl.getAttribLocation(program, 'vertColor');
+
+	gl.vertexAttribPointer(
+		positionAttribLocation, // Attribute location
+		2, // Number of elements per attribute
+		gl.FLOAT, // Type of elements
+		gl.FALSE,
+		5 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
+		0 // Offset from the beginning of a single vertex to this attribute
+	);
+
+	gl.vertexAttribPointer(
+		colorAttribLocation, // Attribute location
+		3, // Number of elements per attribute
+		gl.FLOAT, // Type of elements
+		gl.FALSE,
+		5 * Float32Array.BYTES_PER_ELEMENT, // Size of an individual vertex
+		2 * Float32Array.BYTES_PER_ELEMENT // Offset from the beginning of a single vertex to this attribute
+	);
+
+	gl.enableVertexAttribArray(positionAttribLocation);
+	gl.enableVertexAttribArray(colorAttribLocation);
+
+
+    let uChange = gl.getUniformLocation(program, 'uChange');
+    let speed = 0.0204;
+    let dy = 0;
+
+    function render() {
+        if (dy >= 0.7 || dy <= -0.7) {
+            speed = -speed;
         }
+		
+        dy += speed;
+        
+		let leftS = [
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, 0.0, 0.0, 1.0,
+		];
+		
+		let rightS = [
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, dy, 0.0, 1.0,
+		];
 
-        // Let the computer pick a color from the color pallete to fill the background
-        gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        // Ask the computer to fill the background with the above color
-        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.clearColor(0.8, 0.7, 0.5, 1.0);
+	    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        gl.drawArrays(gl.LINES, 0, 255);
+        gl.useProgram(program);
+        gl.uniformMatrix4fv(uChange, false, leftS);
+        gl.drawArrays(gl.TRIANGLES, 0, 48);
+
+		gl.uniformMatrix4fv(uChange, false, rightS);
+        gl.drawArrays(gl.TRIANGLES, 48, 48);
+            
         requestAnimationFrame(render);
     }
     render();
-}
+};
+
+main();
