@@ -206,8 +206,8 @@ function onDocumentKeyDown(event) {
     };
 
 function objectLoop() {
-    object.rotation.z -= rot
-    object.rotation.x -= rot
+    object.rotation.z -= 0
+    object.rotation.x -= 0.05
     object.position.x = -1.5
     object.position.y = 0
     object2.rotation.z -= rot
