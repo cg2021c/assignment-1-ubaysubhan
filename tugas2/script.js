@@ -136,8 +136,8 @@ let createObject2 = function() {
     const newObject = new THREE.PlaneGeometry( 20, 20 );
     const newMaterial = new THREE.MeshBasicMaterial( {color: 0x204204, side: THREE.DoubleSide} );
     const plane = new THREE.Mesh( newObject, newMaterial );
-    plane.rotation.x = Math.PI / -2.2;
-    plane.position.set(2, 0, 0);
+    plane.rotation.x = Math.PI / -2.0;
+    plane.position.set(2, -1, 0);
     scene.add( plane );
 
 
@@ -174,6 +174,9 @@ let lights = function() {
 
 var xSpeed = 0.05;
 var zSpeed = 0.05;
+var degree = 90;
+var orbitRadius = 5;
+var zoomfactor =1;
 
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
@@ -189,18 +192,13 @@ function onDocumentKeyDown(event) {
         lightsource.position.x += xSpeed;
     }
     else if (keyCode == 38) {
+        // camera.position.z -= zSpeed;
         camera.position.z -= zSpeed;
     }
     else if (keyCode == 40) {
         camera.position.z += zSpeed;
     }
-    else if (keyCode == 37) {
-        camera.position.x += xSpeed;
-       
-    }
-    else if (keyCode == 39) {
-        camera.position.x -= xSpeed;
-    }
+
     else if (keyCode == 32){
         if(light.intensity != 0){
             light.intensity=0;
@@ -209,6 +207,29 @@ function onDocumentKeyDown(event) {
             light.intensity=1;
         }
     }
+
+    if (keyCode == 39){
+        degree -= 1.0;
+        let sin = Math.sin(degree * Math.PI / 180);
+        let cos = Math.cos(degree * Math.PI / 180);
+
+        camera.position.x = orbitRadius* cos;
+        camera.position.z = orbitRadius* sin;
+        camera.lookAt(lightsource.position);
+
+    }
+    if (keyCode == 37){
+        degree += 1.0;
+        let sin = Math.sin(degree * Math.PI / 180);
+        let cos = Math.cos(degree * Math.PI / 180);
+
+        camera.position.x = orbitRadius* cos;
+        camera.position.z = orbitRadius* sin;
+        camera.lookAt(lightsource.position);
+
+    }
+    
+    
 };
 
 
@@ -227,7 +248,8 @@ var controls;
         camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1000);
     controls = new OrbitControls(camera, renderer.domElement);
     camera.position.set(0,0,5);
-    controls.update;
+   
+    
 
         
         // 3. create an locate the object on the scene           
