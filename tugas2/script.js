@@ -177,10 +177,10 @@ function onDocumentKeyDown(event) {
 };
 
     // set up the environment - 
-    // initiallize scene, camera, objects and renderer
-    let init = function() {
-        // 1. create the scene
-        scene = new THREE.Scene();
+    // initiallize scene, camera, objects and renderer
+    let init = function() {
+    // 1. create the scene
+        scene = new THREE.Scene();
     scene.background = new THREE.Color('orange');
         
         // 2. create an locate the camera       
