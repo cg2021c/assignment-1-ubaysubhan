@@ -151,12 +151,14 @@ let createObject2 = function() {
 };
 
 let lightsource;
+let light;
 let createLight = function() {
     const geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.1 );
     const material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
     lightsource = new THREE.Mesh( geometry, material );
+    
 
-    const light = new THREE.PointLight( 0xffffff, 1, 100 );
+    light = new THREE.PointLight( 0xffffff, 1, 404 );
     light.position.set( lightsource.position.x, lightsource.position.y, lightsource.position.z );
     lightsource.add( light );
     scene.add( lightsource );
@@ -166,6 +168,25 @@ let lights = function() {
     const ambientLight = new THREE.AmbientLight( 0xffffff, 0.404 );
     scene.add(ambientLight);
 };
+
+
+var xSpeed = 0.05;
+var zSpeed = 0.05;
+
+function onDocumentKeyDown(event) {
+    var keyCode = event.which;
+
+     if (keyCode == 32){
+        if(light.intensity != 0){
+            light.intensity=0;
+        }
+        else{
+            light.intensity=1;
+        }
+    }
+};
+
+
 
 
     // set up the environment - 
@@ -193,7 +214,7 @@ let lights = function() {
     document.body.appendChild(renderer.domElement);
     // container.appendChild(renderer.domElement);
 
-//     document.addEventListener("keydown", onDocumentKeyDown, false);
+    document.addEventListener("keydown", onDocumentKeyDown, false);
 //       
     };
 
