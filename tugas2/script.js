@@ -137,7 +137,7 @@ let createObject2 = function() {
     const newMaterial = new THREE.MeshBasicMaterial( {color: 0x204204, side: THREE.DoubleSide} );
     const plane = new THREE.Mesh( newObject, newMaterial );
     plane.rotation.x = Math.PI / -2.2;
-    plane.position.set(2, 0, -20);
+    plane.position.set(2, 0, 0);
     scene.add( plane );
 
 
@@ -196,7 +196,7 @@ function onDocumentKeyDown(event) {
     }
     else if (keyCode == 37) {
         camera.position.x += xSpeed;
-        camera.position.z += zSpeed;
+       
     }
     else if (keyCode == 39) {
         camera.position.x -= xSpeed;
