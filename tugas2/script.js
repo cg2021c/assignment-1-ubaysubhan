@@ -1,3 +1,5 @@
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+
 let scene, camera, renderer;
 let rot = 0.01;
     
@@ -175,8 +177,31 @@ var zSpeed = 0.05;
 
 function onDocumentKeyDown(event) {
     var keyCode = event.which;
-
-     if (keyCode == 32){
+    if (keyCode == 87) {
+        lightsource.position.z += zSpeed;
+    } else if (keyCode == 83) {
+        lightsource.position.z -= zSpeed;
+    } 
+    else if (keyCode == 65) {
+        lightsource.position.x -= xSpeed;
+    } 
+    else if (keyCode == 68) {
+        lightsource.position.x += xSpeed;
+    }
+    else if (keyCode == 38) {
+        camera.position.z -= zSpeed;
+    }
+    else if (keyCode == 40) {
+        camera.position.z += zSpeed;
+    }
+    else if (keyCode == 37) {
+        camera.position.x += xSpeed;
+        camera.position.z += zSpeed;
+    }
+    else if (keyCode == 39) {
+        camera.position.x -= xSpeed;
+    }
+    else if (keyCode == 32){
         if(light.intensity != 0){
             light.intensity=0;
         }
@@ -188,6 +213,7 @@ function onDocumentKeyDown(event) {
 
 
 
+var controls;
 
     // set up the environment - 
     // initiallize scene, camera, objects and renderer
@@ -195,10 +221,14 @@ function onDocumentKeyDown(event) {
     // 1. create the scene
         scene = new THREE.Scene();
     scene.background = new THREE.Color('orange');
-        
+          renderer = new THREE.WebGLRenderer();   
+    renderer.setSize(window.innerWidth, window.innerHeight);    
         // 2. create an locate the camera       
         camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.z = 5;
+    controls = new OrbitControls(camera, renderer.domElement);
+    camera.position.set(0,0,5);
+    controls.update;
+
         
         // 3. create an locate the object on the scene           
         createObject();
@@ -206,10 +236,7 @@ function onDocumentKeyDown(event) {
     createLight();
     // createText();
     lights();
-        
-        // 4. create the renderer     
-        renderer = new THREE.WebGLRenderer();   
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    
     
     document.body.appendChild(renderer.domElement);
     // container.appendChild(renderer.domElement);
