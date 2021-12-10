@@ -159,22 +159,6 @@ let lights = function() {
     scene.add(ambientLight);
 };
 
-var xSpeed = 0.05;
-var ySpeed = 0.05;
-function onDocumentKeyDown(event) {
-    var keyCode = event.which;
-    if (keyCode == 87) {
-        lightsource.position.y += ySpeed;
-    } else if (keyCode == 83) {
-        lightsource.position.y -= ySpeed;
-    } 
-    else if (keyCode == 65) {
-        camera.position.x -= xSpeed;
-    } 
-    else if (keyCode == 68) {
-        camera.position.x += xSpeed;
-    } 
-};
 
     // set up the environment - 
     // initiallize scene, camera, objects and renderer
@@ -201,21 +185,16 @@ function onDocumentKeyDown(event) {
     document.body.appendChild(renderer.domElement);
     // container.appendChild(renderer.domElement);
 
-    document.addEventListener("keydown", onDocumentKeyDown, false);
-      
+//     document.addEventListener("keydown", onDocumentKeyDown, false);
+//       
     };
 
 function objectLoop() {
-    object.rotation.z -= 0
-    object.rotation.x -= 0.05
     object.position.x = -1.5
     object.position.y = 0
-    object2.rotation.z -= rot
-    object2.rotation.x -= rot
     object2.position.x = 1.2
     object2.position.y = 0
-    // cube.position.x = -1.5
-    // cube.position.y = 0.5
+  
 }
 
 
