@@ -131,6 +131,14 @@ let createObject2 = function() {
 
     ];
 
+    const newObject = new THREE.PlaneGeometry( 20, 20 );
+    const newMaterial = new THREE.MeshBasicMaterial( {color: 0x204204, side: THREE.DoubleSide} );
+    const plane = new THREE.Mesh( newObject, newMaterial );
+    plane.rotation.x = Math.PI / -2.2;
+    plane.position.set(2, 0, -20);
+    scene.add( plane );
+
+
     geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
     geometry.computeVertexNormals();
 
